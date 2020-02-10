@@ -61,10 +61,12 @@ export default class Webview extends Component {
   };
 
   focusWebviewIfVisible() {
-    if (this.props.visible && this.webview) {
-      this.webview.focus();
-    } else {
-      this.webview.blur();
+    if (this.webview) {
+      if (this.props.visible) {
+        this.webview.focus();
+      } else {
+        this.webview.blur();
+      }
     }
   }
 
@@ -73,7 +75,7 @@ export default class Webview extends Component {
     return (
       <webview
         {...validProps}
-        style={{visibility: visible ? 'visible' : 'hidden'}}
+        style={{display: visible ? 'flex' : 'none', pointerEvents: visible ? 'auto' : 'none'}}
         ref={webview => (this.webview = webview)}
       />
     );
