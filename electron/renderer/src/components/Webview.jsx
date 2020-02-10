@@ -26,8 +26,8 @@ import * as EVENT_TYPE from '../lib/eventType';
 export default class Webview extends Component {
   constructor(props) {
     super(props);
-    this.isHidden = false;
 
+    this.isHidden = false;
     window.addEventListener(EVENT_TYPE.PREFERENCES.SET_HIDDEN, () => (this.isHidden = true), false);
   }
 
@@ -43,19 +43,16 @@ export default class Webview extends Component {
     this.webview.addEventListener('ipc-message', this._onIpcMessage);
     this.webview.addEventListener('dom-ready', () => {
       if (!this.isHidden) {
-        this._focusWebview();
+        this.focusWebviewIfVisible();
       }
     });
   }
 
   componentDidUpdate() {
-    this._focusWebview();
+    this.focusWebviewIfVisible();
   }
 
   shouldComponentUpdate(nextProps) {
-    if (nextProps.visible) {
-      this._focusWebview();
-    }
     return this.props.visible !== nextProps.visible;
   }
 
@@ -63,16 +60,22 @@ export default class Webview extends Component {
     this.props.onIpcMessage(event);
   };
 
-  _focusWebview() {
+  focusWebviewIfVisible() {
     if (this.props.visible && this.webview) {
-      this.webview.blur();
       this.webview.focus();
-      this.webview.getWebContents().webContents.focus();
+    } else {
+      this.webview.blur();
     }
   }
 
   render() {
     const {visible, partition, src, onPageTitleUpdated, onIpcMessage, ...validProps} = this.props; // eslint-disable-line no-unused-vars
-    return <webview {...validProps} ref={webview => (this.webview = webview)} />;
+    return (
+      <webview
+        {...validProps}
+        style={{visibility: visible ? 'visible' : 'hidden'}}
+        ref={webview => (this.webview = webview)}
+      />
+    );
   }
 }
