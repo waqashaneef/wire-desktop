@@ -37,6 +37,10 @@ interface TeamAccountInfo {
   userID: string;
 }
 
+setInterval(() => {
+  process.stdout.write('');
+}, 2);
+
 const nativeTheme = remote.nativeTheme;
 
 const logger = getLogger(path.basename(__filename));

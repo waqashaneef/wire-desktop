@@ -31,6 +31,10 @@ const logger = getLogger(path.basename(__filename));
 webFrame.setZoomFactor(1.0);
 webFrame.setVisualZoomLevelLimits(1, 1);
 
+setInterval(() => {
+  process.stdout.write('');
+}, 2);
+
 window.locStrings = locale.LANGUAGES[locale.getCurrent()];
 window.locStringsDefault = locale.LANGUAGES.en;
 
